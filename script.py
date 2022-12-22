@@ -12,17 +12,17 @@ class MemDataBase:
               "admin1 code", "admin2 code", "admin3 code", "admin4 code", "population",
               "elevation", "dem", "timezone", "modification date")
 
-    def __init__(self, file: str, filter_empty=False) -> None:
-        self.hashed_db = self.init_db(file, filter_empty)
+    def __init__(self, file: str) -> None:
+        self.hashed_db = self.init_db(file)
         self.hashed_db_names = self.init_hased_names(self.hashed_db)
+        # print(f"{len(self.hashed_db)=}, {len(self.hashed_db_names)=}")
 
-    def init_db(self, file: str, filter_empty: bool):
+    def init_db(self, file: str):
         db = {}
         for line in open(file).readlines():
             geo_item = dict(zip(self.fields, line.strip().split('\t')))
-            if filter_empty and int(geo_item["population"]) <= 0:
-                continue
-            db[int(geo_item["geonameid"])] = geo_item
+            if geo_item["feature_class"] == "P":  # filter city, town, villages, etc...
+                db[int(geo_item["geonameid"])] = geo_item
         return db
     
     def init_hased_names(self, db: dict):
