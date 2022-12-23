@@ -4,7 +4,7 @@
 
 ## Установка
 ```
-pip intall fastapi="^0.88.0" uvicorn="^0.20.0" pytz="^2022.7"
+pip install fastapi==0.88.0 uvicorn==0.20.0 pytz==2022.7
 ```
 
 ## Запуск
@@ -15,6 +15,7 @@ python3 script.py
 !Запуск может занять время, вследствии обработки файла.
 
 ## Описание
+https://github.com/danzay42/infotecs
 Т.к. сервис выполнен на FastAPI основное описание API можно найти:
  - http://127.0.0.1:8000/redoc
  - http://127.0.0.1:8000/docs
