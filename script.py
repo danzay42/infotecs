@@ -15,7 +15,6 @@ class MemDataBase:
     def __init__(self, file: str) -> None:
         self.hashed_db = self.init_db(file)
         self.hashed_db_names = self.init_hased_names(self.hashed_db)
-        # print(f"{len(self.hashed_db)=}, {len(self.hashed_db_names)=}")
 
     def init_db(self, file: str):
         db = {}
