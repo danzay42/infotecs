@@ -2,13 +2,11 @@ import datetime
 import dataclasses
 import pytz
 from fastapi import FastAPI, HTTPException, status
-from pydantic import BaseModel
 import uvicorn
 
 
 @dataclasses.dataclass
 class GeoInfo:
-# class GeoInfo(BaseModel):
     geonameid: int
     name: str
     asciiname: str
@@ -32,7 +30,6 @@ class GeoInfo:
 
 @dataclasses.dataclass
 class GeoInfoCompare:
-# class GeoInfoCompare(BaseModel):
         north: str
         is_same_time: bool
         timezone_diff: str
@@ -48,16 +45,17 @@ class MemDataBase:
         self.hashed_db = self.init_db(file)
         self.hashed_db_names = self.init_hased_names(self.hashed_db)
 
-    def init_db(self, file: str) -> dict[int, GeoInfo]:
+    @staticmethod
+    def init_db(file: str) -> dict[int, GeoInfo]:
         db = {}
         for line in open(file).readlines():
             geo_item = GeoInfo(*line.strip().split('\t'))
-            # geo_item = GeoInfo(**dict(zip(GeoInfo.__fields__.keys(), line.strip().split('\t'))))
             if geo_item.feature_class == "P":  # filter city, town, villages, etc...
                 db[int(geo_item.geonameid)] = geo_item
         return db
     
-    def init_hased_names(self, db: dict[int, GeoInfo]) -> dict[str, list[GeoInfo]]:
+    @staticmethod
+    def init_hased_names(db: dict[int, GeoInfo]) -> dict[str, list[GeoInfo]]:
         hashed_names = {}
         for geo_item in sorted(db.values(), key=lambda gi: int(gi.population)):
             for name in geo_item.alternatenames.split(','):
